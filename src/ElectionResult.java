@@ -94,6 +94,11 @@ public class ElectionResult {
         this.fips = fips;
     }
 
+    public String toString (){
+        return (DemVotes + ", " + GOPVotes + ", " + totalVotes + ", " + perDem + ", " + perGOP + ", "
+                + difference + ", " + perPointDiff + ", " + stateAbbr + "," + countyName + "," + fips);
+
+    }
 
 
 }
