@@ -12,9 +12,10 @@ public class Main {
         String data = Utils.readFileAsString("data/2016_Presidential_Results.csv");
         ArrayList<ElectionResult> results = Utils.parse2016ElectionResults(data);
 
-//        for (int i = 0; i < results.size(); i++){
-//            results.get(i).toString();
-//        }
+        // test toString method
+        for (int i = 0; i<results.size(); i++) {
+            System.out.println(results.get(i).toString());
+        }
 
     }
 }
