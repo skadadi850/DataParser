@@ -1,7 +1,7 @@
 public class ElectionResult {
-    double DemVotes, GOPVotes, totalVotes, perDem, perGOP, perPointDiff;
-    String difference, stateAbbr, countyName;
-    int fips;
+    private double DemVotes, GOPVotes, totalVotes, perDem, perGOP, perPointDiff;
+    private String difference, stateAbbr, countyName;
+    private int fips;
 
     public ElectionResult (double DV, double GOPV, double total_votes, double per_dem, double per_gop, String diff, double per_point_diff, String state_abbr, String county_name, int combined_fips){
         this.DemVotes = DV;
