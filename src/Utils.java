@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Utils {
     public static String readFileAsString(String filepath) {
         StringBuilder output = new StringBuilder();
-
         try (Scanner scanner = new Scanner(new File(filepath))) {
 
             while (scanner.hasNext()) {
@@ -24,17 +23,13 @@ public class Utils {
         ArrayList <ElectionResult> results = new ArrayList<>();
 
         String [] rows = data.split("\n");
-
         for (int i = 1; i < rows.length; i++){
 
-            int indexOfCommaInQuotes = rows[i].indexOf(",",rows[i].indexOf("\""));
-            String[] fields;
+            String countyData = rows [i];
+            String [] fields = parseDifference (countyData);
 
-            if (indexOfCommaInQuotes == -1){
-                fields = rows[i].split(",");
-            }else {
-                String strWOComma = rows[i].substring(0, indexOfCommaInQuotes) + rows[i].substring(indexOfCommaInQuotes + 1);
-                fields = strWOComma.split(",");
+            for (int j = 0; j < fields.length; j++){
+                fields[j] = fields[j].trim();
             }
 
             double demVotes = Double.parseDouble(fields[1]);
@@ -42,18 +37,50 @@ public class Utils {
             double totalVotes = Double.parseDouble(fields[3]);
             double perDem = Double.parseDouble(fields[4]);
             double perGop = Double.parseDouble(fields[5]);
-            String difference = fields[6];
+            double difference = Double.parseDouble(fields[6]);
             double perPointDifference = Double.parseDouble(fields[7].substring(0,fields[7].length()-1));
-            System.out.println (perPointDifference);
             String stateAbbrv = fields[8];
             String countyName = fields[9];
             int fips = Integer.parseInt(fields[10]);
 
             ElectionResult newCounty = new ElectionResult(demVotes, gopVotes, totalVotes, perDem, perGop, difference,
                     perPointDifference, stateAbbrv, countyName, fips);
+            //System.out.println(newCounty.toString());
 
             results.add(newCounty);
         }
         return results;
     }
+
+    private static String[] parseDifference(String data) {
+        String [] fields;
+        String strWODifferenceB = "";
+        String strWODifferenceE = "";
+        String finalString = "";
+
+        int indexOfFirstQuote = data.indexOf("\"");
+        int indexOfSecondQuote = data.indexOf("\"", indexOfFirstQuote+1);
+
+        if (indexOfFirstQuote== -1){
+            fields = data.split(",");
+        }else {
+            String difference = data.substring(indexOfFirstQuote+1,indexOfSecondQuote);
+            strWODifferenceB = data.substring(0,indexOfFirstQuote);
+            strWODifferenceE = data.substring(indexOfSecondQuote+1);
+
+            int indexOfCommaInQuote = difference.indexOf(",");
+
+            while (indexOfCommaInQuote != -1) {
+                difference = difference.substring(0,indexOfCommaInQuote) + difference.substring(indexOfCommaInQuote+1);
+                indexOfCommaInQuote = difference.indexOf(",");
+            }
+
+            finalString = strWODifferenceB + difference + strWODifferenceE;
+
+            fields = finalString.split(",");
+        }
+        return fields;
+    }
+
+
 }
