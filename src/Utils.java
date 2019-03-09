@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class Utils {
         return results;
     }
 
+
+
     private static String[] parseDifference(String data) {
         String [] fields;
         String finalString;
@@ -82,6 +85,78 @@ public class Utils {
         }
 
         return (strWODifferenceB + difference + strWODifferenceE);
+    }
+
+
+    public static DataManager parseAllData (String electionData, String educationData, String employmentData) {
+        DataManager structure = new DataManager();
+
+        String[] rows = educationData.split("\n");
+
+        for (int i = 6; i < 3288; i++) {
+            String[] fields = educationData.split(",");
+
+            String stateName = fields[1];
+            boolean stateExists = false;
+            for (int j = 0; j < fields.length; j++) {
+                if (fields[j].equals(stateName)) {
+                    stateExists = true;
+                }
+            }
+            if (stateExists == false) {
+                State state = new State(stateName);
+                structure.addState(state);
+            }
+
+            String countyName = fields[2];
+            int fips = Integer.parseInt(fields[0]);
+
+            double [] electionResults = getElection2016Data(electionData, countyName);
+            Election2016 vote2016 = new Election2016(electionResults[0], electionResults[1], electionResults[2]);
+
+            double [] educationResults = getEducation2016Data(educationData, countyName);
+            Education2016 educ2016 = new Education2016();
+
+            String [] employmentResults = getEmployment2016Data(employmentData, countyName);
+            Employment2016 employ2016 = new Employment2016();
+
+
+        }
+        return structure;
+    }
+
+    private static double[] getEducation2016Data(String educationData, String countyName) {
+        
+    }
+
+    private static double[] getElection2016Data(String electionData, String countyName) {
+        String demVotes;
+        String gopVotes;
+        String totalVotes;
+
+        double [] votingInfo = new double[3];
+
+        String[] rows = electionData.split("\n");
+
+        for (int i = 2; i < electionData.length(); i++) {
+            String countyData = rows [i];
+            String [] fields = parseDifference (countyData);
+
+            if (fields[fields.length-2].equals(countyName)){
+                demVotes = (fields[1]);
+                gopVotes = (fields[2]);
+                totalVotes = (fields[3]);
+
+                votingInfo[0] = Double.parseDouble(demVotes);
+                votingInfo[1] = Double.parseDouble(gopVotes);
+                votingInfo[2] = Double.parseDouble(totalVotes);
+            }
+
+            return votingInfo;
+        }
+
+
+
     }
 
 
