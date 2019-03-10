@@ -103,28 +103,66 @@ public class Utils {
                     stateExists = true;
                 }
             }
+
             if (stateExists == false) {
                 State state = new State(stateName);
                 structure.addState(state);
+
+                String countyName = fields[2];
+                int fips = Integer.parseInt(fields[0]);
+
+                double[] electionResults = getElection2016Data(electionData, countyName);
+                Election2016 vote2016 = new Election2016(electionResults[0], electionResults[1], electionResults[2]);
+
+                double[] educationResults = getEducation2016Data(educationData, countyName);
+                Education2016 educ2016 = new Education2016(educationResults[0], educationResults[1], educationResults[2],
+                        educationResults[3]);
+
+
+                String[] employmentResults = getEmployment2016Data(employmentData, countyName);
+                Employment2016 employ2016 = new Employment2016(Integer.parseInt(employmentResults[0]),
+                        Integer.parseInt(employmentResults[1]), Integer.parseInt(employmentResults[2]),
+                        Double.parseDouble(employmentResults[3]));
+
+                County c = new County(countyName, fips, vote2016, educ2016, employ2016);
+
+                state.addCounty(c);
             }
-
-            String countyName = fields[2];
-            int fips = Integer.parseInt(fields[0]);
-
-            double [] electionResults = getElection2016Data(electionData, countyName);
-            Election2016 vote2016 = new Election2016(electionResults[0], electionResults[1], electionResults[2]);
-
-            double [] educationResults = getEducation2016Data(educationData, countyName);
-            Education2016 educ2016 = new Education2016(educationResults[0], educationResults[1], educationResults[2],
-                    educationResults[3]);
-            
-
-            String [] employmentResults = getEmployment2016Data(employmentData, countyName);
-            Employment2016 employ2016 = new Employment2016();
-
 
         }
         return structure;
+    }
+
+    private static String[] getEmployment2016Data(String employmentData, String countyName) {
+        String totalLaborForce;
+        String employedLaborForce;
+        String unemployedLaborForce;
+        String unemployedPercent;
+
+        String [] employmentInfo = new String [4];
+
+        String [] rows = employmentData.split("\n");
+
+        for (int i = 9; i < rows.length; i++) {
+            String empRow = rows[i];
+            String[] fields = parseDifference(empRow);
+            if (fields[3].equals(countyName)) {
+                totalLaborForce = fields[fields.length - 11];
+                employedLaborForce = fields[fields.length - 10];
+                unemployedLaborForce = fields[fields.length - 9];
+                unemployedPercent = fields[fields.length - 8];
+
+                employmentInfo [0] = totalLaborForce;
+                employmentInfo [1] = employedLaborForce;
+                employmentInfo [2] = unemployedLaborForce;
+                employmentInfo [3] = unemployedPercent;
+
+            }
+
+        }
+
+        return employmentInfo;
+
     }
 
     private static double[] getEducation2016Data(String educationData, String countyName) {
@@ -142,10 +180,10 @@ public class Utils {
             String [] fields = parseDifference(eduRow);
 
             if (fields[2].equals(countyName)){
-                noHighSchool = Double.parseDouble(fields[8]);
-                onlyHighSchool = Double.parseDouble(fields[9]);
-                someCollege = Double.parseDouble(fields[10]);
-                bachelorsOrMore = Double.parseDouble(fields[11]);
+                noHighSchool = Double.parseDouble(fields[fields.length-8]);
+                onlyHighSchool = Double.parseDouble(fields[fields.length-7]);
+                someCollege = Double.parseDouble(fields[fields.length-6]);
+                bachelorsOrMore = Double.parseDouble(fields[fields.length-5]);
 
                 educationInfo [0] = noHighSchool;
                 educationInfo [1] = onlyHighSchool;
