@@ -115,7 +115,9 @@ public class Utils {
             Election2016 vote2016 = new Election2016(electionResults[0], electionResults[1], electionResults[2]);
 
             double [] educationResults = getEducation2016Data(educationData, countyName);
-            Education2016 educ2016 = new Education2016();
+            Education2016 educ2016 = new Education2016(educationResults[0], educationResults[1], educationResults[2],
+                    educationResults[3]);
+            
 
             String [] employmentResults = getEmployment2016Data(employmentData, countyName);
             Employment2016 employ2016 = new Employment2016();
@@ -126,7 +128,33 @@ public class Utils {
     }
 
     private static double[] getEducation2016Data(String educationData, String countyName) {
-        
+        double noHighSchool;
+        double onlyHighSchool;
+        double someCollege;
+        double bachelorsOrMore;
+
+        double [] educationInfo = new double[4];
+
+        String [] rows = educationData.split("\n");
+
+        for (int i = 6; i < rows.length; i++) {
+            String eduRow = rows[i];
+            String [] fields = parseDifference(eduRow);
+
+            if (fields[2].equals(countyName)){
+                noHighSchool = Double.parseDouble(fields[8]);
+                onlyHighSchool = Double.parseDouble(fields[9]);
+                someCollege = Double.parseDouble(fields[10]);
+                bachelorsOrMore = Double.parseDouble(fields[11]);
+
+                educationInfo [0] = noHighSchool;
+                educationInfo [1] = onlyHighSchool;
+                educationInfo [2] = someCollege;
+                educationInfo [3] = bachelorsOrMore;
+            }
+        }
+        return educationInfo;
+
     }
 
     private static double[] getElection2016Data(String electionData, String countyName) {
@@ -138,7 +166,7 @@ public class Utils {
 
         String[] rows = electionData.split("\n");
 
-        for (int i = 2; i < electionData.length(); i++) {
+        for (int i = 2; i < rows.length; i++) {
             String countyData = rows [i];
             String [] fields = parseDifference (countyData);
 
