@@ -74,6 +74,7 @@ public class Utils {
         int indexOfSecondQuote = data.indexOf("\"", indexOfFirstQuote+1);
 
         String difference = data.substring(indexOfFirstQuote+1,indexOfSecondQuote);
+        difference = difference.trim();
         strWODifferenceB = data.substring(0,indexOfFirstQuote);
         strWODifferenceE = data.substring(indexOfSecondQuote+1);
 
@@ -140,22 +141,31 @@ public class Utils {
         String [] rows = employmentData.split("\n");
 
         for (int i = 9; i < rows.length; i++) {
-            String empRow = rows[i];
-            String[] fields = parseDifference(empRow);
-            if (fields[3].equals(countyName)) {
-                totalLaborForce = fields[fields.length - 11];
-                employedLaborForce = fields[fields.length - 10];
-                unemployedLaborForce = fields[fields.length - 9];
-                unemployedPercent = fields[fields.length - 8];
+            String [] fields = removeQuoteFromRow (rows[i]);
+            for (int k = 0; k < fields.length; k++){
+                fields[k] = fields[k].trim();
+            }
+            if (fields[fields.length - 11]== null){
+                totalLaborForce = "0";
+            }else{totalLaborForce = fields[fields.length - 11];}
+            if (fields[fields.length - 10]== null) {
+                employedLaborForce = "0";
+            } else {employedLaborForce = fields[fields.length - 10];}
+            if (fields[fields.length-9] == null){
+                unemployedLaborForce = "0";
+            }else {unemployedLaborForce = fields[fields.length - 9];}
+            if (fields[fields.length-8]==null){
+                unemployedPercent = "0";
+            }else {unemployedPercent = fields[fields.length - 8];}
 
-                employmentInfo [0] = totalLaborForce;
-                employmentInfo [1] = employedLaborForce;
-                employmentInfo [2] = unemployedLaborForce;
-                employmentInfo [3] = unemployedPercent;
+            employmentInfo [0] = totalLaborForce;
+            employmentInfo [1] = employedLaborForce;
+            employmentInfo [2] = unemployedLaborForce;
+            employmentInfo [3] = unemployedPercent;
 
             }
 
-        }
+
 
         return employmentInfo;
 
@@ -171,16 +181,8 @@ public class Utils {
 
         String [] rows = educationData.split("\n");
 
-        for (int i = 6; i < rows.length; i++) {
-            String eduRow = rows[i];
-
-
-            String [] fields = parseDifference(eduRow);
-            for (int k = 0; k < fields.length; k++){
-                System.out.println(fields[k]);
-            }
-
-
+        for (int i = 6; i < 3288; i++) {
+            String [] fields = removeQuoteFromRow (rows[i]);
 
             if (fields[2].equals(countyName)){
 

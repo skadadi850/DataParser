@@ -1,9 +1,9 @@
 public class ElectionResult {
-    private double DemVotes, GOPVotes, totalVotes, perDem, perGOP, perPointDiff;
-    private String difference, stateAbbr, countyName;
+    private double DemVotes, GOPVotes, totalVotes, perDem, perGOP, perPointDiff, difference;
+    private String stateAbbr, countyName;
     private int fips;
 
-    public ElectionResult (double DV, double GOPV, double total_votes, double per_dem, double per_gop, String diff, double per_point_diff, String state_abbr, String county_name, int combined_fips){
+    public ElectionResult (double DV, double GOPV, double total_votes, double per_dem, double per_gop, double diff, double per_point_diff, String state_abbr, String county_name, int combined_fips){
         this.DemVotes = DV;
         this.GOPVotes = GOPV;
         this.totalVotes = total_votes;
@@ -72,11 +72,11 @@ public class ElectionResult {
         this.perPointDiff = perPointDiff;
     }
 
-    public String getDifference() {
+    public Double getDifference() {
         return difference;
     }
 
-    public void setDifference(String difference) {
+    public void setDifference(double difference) {
         this.difference = difference;
     }
 
@@ -98,7 +98,7 @@ public class ElectionResult {
 
     public String toString (){
         return (DemVotes + ", " + GOPVotes + ", " + totalVotes + ", " + perDem + ", " + perGOP + ", "
-                + difference + ", " + perPointDiff + ", " + stateAbbr + "," + countyName + "," + fips);
+                + difference + ", " + perPointDiff + ", " + stateAbbr + ", " + countyName + ", " + fips);
 
     }
 
