@@ -1,7 +1,7 @@
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Utils {
@@ -91,43 +91,77 @@ public class Utils {
 
     public static DataManager parseAllData (String electionData, String educationData, String employmentData) {
         DataManager structure = new DataManager();
-
         String[] rows = educationData.split("\n");
+        List<State> states = structure.getStates();
+        State state = null;
+        County county = null;
 
-        for (int i = 6; i < 3288; i++) {
+        int dataStart = 6;
+        int dataEnd = 3288;
+        for (int i = dataStart; i < dataEnd; i++) {
 
             String[] fields = rows[i].split(",");
-
             String stateName = fields[1];
-            System.out.println (stateName);
 
+            // add all States
 
-            State state = new State(stateName);
-            structure.addState(state);
+            state = getState(stateName, states);
+            if (state == null){
+                state = new State(stateName);
+            }
+
 
             String countyName = fields[2];
             int fips = Integer.parseInt(fields[0]);
+            county = getCounty(state, state.getCounties(), countyName);
+            if (county == null){
+                county = new County(countyName, fips, null, null,null);
+            }
+
+
 
             double[] electionResults = getElection2016Data(electionData, countyName);
             Election2016 vote2016 = new Election2016(electionResults[0], electionResults[1], electionResults[2]);
+            county.setVote2016(vote2016);
 
             double[] educationResults = getEducation2016Data(educationData, countyName);
             Education2016 educ2016 = new Education2016(educationResults[0], educationResults[1], educationResults[2],
                     educationResults[3]);
+            county.setEduc2016(educ2016);
 
 
             String[] employmentResults = getEmployment2016Data(employmentData, countyName);
             Employment2016 employ2016 = new Employment2016(Integer.parseInt(employmentResults[0]),
                     Integer.parseInt(employmentResults[1]), Integer.parseInt(employmentResults[2]),
                     Double.parseDouble(employmentResults[3]));
+            county.setEmploy2016(employ2016);
 
-            County c = new County(countyName, fips, vote2016, educ2016, employ2016);
+            System.out.println(county.getEmploy2016().getEmployedLaborForce());
 
-            state.addCounty(c);
+            state.addCounty(county);
+
 
 
         }
         return structure;
+    }
+
+    private static County getCounty(State state, List<County> counties, String countyName) {
+        for (County county : counties){
+            if (county.getName().equals(countyName)){
+                return county;
+            }
+        }
+        return null;
+    }
+
+    public static State getState (String name, List <State> states){
+        for (State state : states){
+            if (state.getName().equals(name)){
+                return state;
+            }
+        }
+        return null;
     }
 
     private static String[] getEmployment2016Data(String employmentData, String countyName) {
@@ -257,6 +291,7 @@ public class Utils {
         String [] fields;
         String finalString = data;
 
+        System.out.println(finalString);
         int indexOfFirstQuote = data.indexOf("\"");
         if (indexOfFirstQuote== -1){
             fields = data.split(",");
@@ -286,6 +321,52 @@ public class Utils {
             int bachelorsOrMore = Integer.parseInt(fields[fields.length-5]);
 
             Education2016 stat = new Education2016(noHighSchool, onlyHighSchool, someCollege, bachelorsOrMore);
+
+            results.add(stat);
+        }
+        return results;
+    }
+
+    public static ArrayList<Employment2016> parseEmploymentResults(String data1) {
+
+        ArrayList<Employment2016> results = new ArrayList<>();
+
+        String [] rows = data1.split("\n");
+        for (int i = 8; i < 3288; i++){
+
+            String [] fields = removeQuoteFromRow (rows[i]);
+
+            String totalLaborForce;
+            String employedLaborForce;
+            String unemployedLaborForce;
+            String unemployedPercent;
+
+
+            System.out.println(fields.length);
+            for (int k = 0; k < fields.length; k++){
+                fields[k] = fields[k].trim();
+                System.out.println(fields[k]);
+            }
+            System.out.println(i);
+            if (fields[fields.length - 11]== null){
+                totalLaborForce = "0";
+            }else{totalLaborForce = fields[fields.length - 11];}
+            if (fields[fields.length - 10]== null) {
+                employedLaborForce = "0";
+            } else {employedLaborForce = fields[fields.length - 10];}
+            if (fields[fields.length-9] == null){
+                unemployedLaborForce = "0";
+            }else {unemployedLaborForce = fields[fields.length - 9];}
+            if (fields[fields.length-8]==null){
+                unemployedPercent = "0";
+            }else {unemployedPercent = fields[fields.length - 8];}
+
+            System.out.println("total labor force" + totalLaborForce);
+            System.out.println("employed labor force" + employedLaborForce);
+            System.out.println("unemployed labor force" + unemployedLaborForce);
+            System.out.println("unemployed percnet" + unemployedPercent);
+            Employment2016 stat = new Employment2016(Integer.parseInt(totalLaborForce),
+                    Integer.parseInt(employedLaborForce), Integer.parseInt(unemployedLaborForce), Double.parseDouble(unemployedPercent));
 
             results.add(stat);
         }
