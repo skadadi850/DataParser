@@ -1,15 +1,20 @@
 public class Education2016 {
+    private String areaName;
     private double noHighSchool;
     private double onlyHighSchool;
     private double someCollege;
     private double bachelorsOrMore;
 
-    public Education2016(double noHighSchool, double onlyHighSchool, double someCollege, double bachelorsOrMore) {
+
+    public Education2016(String areaName, double noHighSchool, double onlyHighSchool, double someCollege, double bachelorsOrMore) {
+        this.areaName = areaName;
         this.noHighSchool = noHighSchool;
         this.onlyHighSchool = onlyHighSchool;
         this.someCollege = someCollege;
         this.bachelorsOrMore = bachelorsOrMore;
     }
+    public String getAreaName(){return areaName;}
+    public void setAreaName(String areaName){ this.areaName = areaName;}
 
     public double getNoHighSchool() {
         return noHighSchool;

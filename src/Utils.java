@@ -125,7 +125,7 @@ public class Utils {
             county.setVote2016(vote2016);
 
             double[] educationResults = getEducation2016Data(educationData, countyName);
-            Education2016 educ2016 = new Education2016(educationResults[0], educationResults[1], educationResults[2],
+            Education2016 educ2016 = new Education2016(countyName, educationResults[0], educationResults[1], educationResults[2],
                     educationResults[3]);
             county.setEduc2016(educ2016);
 
@@ -315,12 +315,13 @@ public class Utils {
 
             String [] fields = removeQuoteFromRow (rows[i]);
 
+            String areaName = fields[2];
             double noHighSchool = Double.parseDouble(fields[fields.length-8]);
             double onlyHighSchool = Double.parseDouble(fields[fields.length-7]);
             double someCollege = Double.parseDouble(fields[fields.length-6]);
             int bachelorsOrMore = Integer.parseInt(fields[fields.length-5]);
 
-            Education2016 stat = new Education2016(noHighSchool, onlyHighSchool, someCollege, bachelorsOrMore);
+            Education2016 stat = new Education2016(areaName, noHighSchool, onlyHighSchool, someCollege, bachelorsOrMore);
 
             results.add(stat);
         }
