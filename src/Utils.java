@@ -99,8 +99,9 @@ public class Utils {
             String[] fields = rows[i].split(",");
 
             String stateName = fields[1];
-            System.out.println (stateName);
+            //System.out.println (stateName);
 
+            getEmployment2010Data(employmentData, "Los Angeles County CA");
 
             State state = new State(stateName);
             structure.addState(state);
@@ -116,58 +117,54 @@ public class Utils {
                     educationResults[3]);
 
 
-            String[] employmentResults = getEmployment2016Data(employmentData, countyName);
-            Employment2016 employ2016 = new Employment2016(Integer.parseInt(employmentResults[0]),
-                    Integer.parseInt(employmentResults[1]), Integer.parseInt(employmentResults[2]),
-                    Double.parseDouble(employmentResults[3]));
+//            String[] employmentResults = getEmployment2016Data(employmentData, countyName);
+//            Employment2016 employ2016 = new Employment2016(Integer.parseInt(employmentResults[0]),
+//                    Integer.parseInt(employmentResults[1]), Integer.parseInt(employmentResults[2]),
+//                    Double.parseDouble(employmentResults[3]));
 
-            County c = new County(countyName, fips, vote2016, educ2016, employ2016);
+ //           County c = new County(countyName, fips, vote2016, educ2016, employ2016);
 
-            state.addCounty(c);
+ //           state.addCounty(c);
 
 
         }
         return structure;
     }
 
-    private static String[] getEmployment2016Data(String employmentData, String countyName) {
-        String totalLaborForce;
-        String employedLaborForce;
-        String unemployedLaborForce;
-        String unemployedPercent;
+    private static void getEmployment2010Data(String employmentData, String countyName) { 
+        String areaName; // 3
+        double civilianLaborForce; // 18
+        double employed2010; // 19
+        double unemployed2010; // 20
 
         String [] employmentInfo = new String [4];
 
         String [] rows = employmentData.split("\n");
+
 
         for (int i = 9; i < rows.length; i++) {
             String [] fields = removeQuoteFromRow (rows[i]);
             for (int k = 0; k < fields.length; k++){
                 fields[k] = fields[k].trim();
             }
-            if (fields[fields.length - 11]== null){
-                totalLaborForce = "0";
-            }else{totalLaborForce = fields[fields.length - 11];}
-            if (fields[fields.length - 10]== null) {
-                employedLaborForce = "0";
-            } else {employedLaborForce = fields[fields.length - 10];}
-            if (fields[fields.length-9] == null){
-                unemployedLaborForce = "0";
-            }else {unemployedLaborForce = fields[fields.length - 9];}
-            if (fields[fields.length-8]==null){
-                unemployedPercent = "0";
-            }else {unemployedPercent = fields[fields.length - 8];}
 
-            employmentInfo [0] = totalLaborForce;
-            employmentInfo [1] = employedLaborForce;
-            employmentInfo [2] = unemployedLaborForce;
-            employmentInfo [3] = unemployedPercent;
+            areaName = fields[2];
+
+            if (areaName.equals(countyName)) {
+                civilianLaborForce = Double.parseDouble(fields[17]);
+                employed2010 = (Double.parseDouble(fields[18]));
+                unemployed2010 = Double.parseDouble(fields[19]);
+
+                System.out.println("Area Name " + areaName);
+                System.out.println("Civilian Labor Force" + civilianLaborForce);
+                System.out.println("employed 2010" + employed2010);
+                System.out.println("unemployed 2010" + unemployed2010);
+
 
             }
 
+        }
 
-
-        return employmentInfo;
 
     }
 

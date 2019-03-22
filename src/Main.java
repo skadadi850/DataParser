@@ -27,11 +27,12 @@ public class Main {
 //            System.out.println(results1.get(i).getBachelorsOrMore());
 //        }
 
-
-
+//
+//
         DataManager structure = Utils.parseAllData(data,data1,data2);
+//
+//        System.out.println (structure.getStates().size());
 
-        System.out.println (structure.getStates().size());
 
 
 

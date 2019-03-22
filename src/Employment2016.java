@@ -1,45 +1,45 @@
 public class Employment2016 {
-    private int totalLaborForce;
-    private int employedLaborForce;
-    private int unemployedLaborForce;
-    private double unemployedPercent;
+    private String areaName; // 3
+    private double civilianLaborForce; // 18
+    private double employed2010; // 19
+    private double unemployed2010; // 20
 
-    public Employment2016(int totalLaborForce, int employedLaborForce, int unemployedLaborForce, double unemployedPercent) {
-        this.totalLaborForce = totalLaborForce;
-        this.employedLaborForce = employedLaborForce;
-        this.unemployedLaborForce = unemployedLaborForce;
-        this.unemployedPercent = unemployedPercent;
+    public Employment2016(String areaName, double civilianLaborForce, double employed2010, double unemployed2010) {
+        this.areaName = areaName;
+        this.civilianLaborForce = civilianLaborForce;
+        this.employed2010 = employed2010;
+        this.unemployed2010 = unemployed2010;
     }
 
-    public int getTotalLaborForce() {
-        return totalLaborForce;
+    public String getAreaName() {
+        return areaName;
     }
 
-    public void setTotalLaborForce(int totalLaborForce) {
-        this.totalLaborForce = totalLaborForce;
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 
-    public int getEmployedLaborForce() {
-        return employedLaborForce;
+    public double getCivilianLaborForce() {
+        return civilianLaborForce;
     }
 
-    public void setEmployedLaborForce(int employedLaborForce) {
-        this.employedLaborForce = employedLaborForce;
+    public void setCivilianLaborForce(double civilianLaborForce) {
+        this.civilianLaborForce = civilianLaborForce;
     }
 
-    public int getUnemployedLaborForce() {
-        return unemployedLaborForce;
+    public double getEmployed2010() {
+        return employed2010;
     }
 
-    public void setUnemployedLaborForce(int unemployedLaborForce) {
-        this.unemployedLaborForce = unemployedLaborForce;
+    public void setEmployed2010(double employed2010) {
+        this.employed2010 = employed2010;
     }
 
-    public double getUnemployedPercent() {
-        return unemployedPercent;
+    public double getUnemployed2010() {
+        return unemployed2010;
     }
 
-    public void setUnemployedPercent(double unemployedPercent) {
-        this.unemployedPercent = unemployedPercent;
+    public void setUnemployed2010(double unemployed2010) {
+        this.unemployed2010 = unemployed2010;
     }
 }
