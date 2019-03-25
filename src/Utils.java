@@ -288,4 +288,22 @@ public class Utils {
         }
         return results;
     }
+
+    public static void parseCrimeData2010 (String data){
+        ArrayList <CrimeData2010> results = new ArrayList<>();
+
+        String [] rows = data.split("\n");
+
+        for (int i = 2; i < rows.length; i++){
+            String [] fields = removeQuoteFromRow(rows[i]);
+
+            String crimeCodeDescription = fields[8];
+            String latitudes = fields[fields.length-2];
+            String longitude = fields[fields.length-1];
+
+            System.out.println("ccd" + crimeCodeDescription + "latitude" + latitudes + "longitude " + longitude);
+
+
+        }
+    }
 }
