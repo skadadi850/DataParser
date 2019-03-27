@@ -1,5 +1,7 @@
 import javax.xml.crypto.Data;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -19,6 +21,20 @@ public class Utils {
 
         return output.toString();
     }
+
+    private void writeDataToFile(String filePath, String data){
+        File outfile = new File(filePath);
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(outfile))){
+            writer.write(data);
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
     public static ArrayList<ElectionResult> parse2016ElectionResults(String data) {
         ArrayList <ElectionResult> results = new ArrayList<>();
@@ -319,6 +335,8 @@ public class Utils {
                 double latitude = Double.parseDouble(longLat[1]);
 
                 System.out.println("ccd " + crimeCodeDescription + "longitude " + longitude + "latitude " + latitude);
+
+                CrimeData2010 point = new CrimeData2010(crimeCodeDescription, longitude,latitude);
             }
         }
     }
@@ -337,6 +355,9 @@ public class Utils {
                 double latitude = Double.parseDouble(fields[fields.length-3]);
 
                 System.out.println("primaryType " + primaryType + " longitude " + longitude + " latitude " + latitude);
+
+                CrimeData2001 point = new CrimeData2001(primaryType, longitude, latitude);
+
             }
 
         }

@@ -15,6 +15,7 @@ public class Main {
         String data3 = Utils.readFileAsString("data/Crime_Data_from_2010_to_Present.csv");
         String data4 = Utils.readFileAsString("data/Crime_-2001_to_present.csv");
 
+
 //        ArrayList<ElectionResult> results = Utils.parse2016ElectionResults(data);
 //
 ////         test toString method
@@ -32,7 +33,7 @@ public class Main {
 
       //  ArrayList <Employment2016> results2 = Utils.parseEmploymentResults(data2);
 
-         Utils.parseCrimeData2010(data3);
+        Utils.parseCrimeData2010(data3);
 
 
 //        DataManager structure = Utils.parseAllData(data,data1,data2);
