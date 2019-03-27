@@ -322,4 +322,23 @@ public class Utils {
             }
         }
     }
+
+    public static void parseCrimeData2001(String data){
+        ArrayList<CrimeData2001> results = new ArrayList<>();
+
+        String [] rows = data.split("\n");
+        for(int i = 2; i< rows.length; i++){
+            String [] fields = removeQuoteFromRow(rows[i]);
+
+            String primaryType = fields[5];
+
+            if(primaryType.contains("BURGLARY") || primaryType.contains("THEFT")){
+                double longitude = Double.parseDouble(fields[fields.length-2]);
+                double latitude = Double.parseDouble(fields[fields.length-3]);
+
+                System.out.println("primaryType " + primaryType + " longitude " + longitude + " latitude " + latitude);
+            }
+
+        }
+    }
 }

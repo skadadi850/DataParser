@@ -13,6 +13,7 @@ public class Main {
         String data1 = Utils.readFileAsString("data/Education.csv");
         String data2 = Utils.readFileAsString("data/Unemployment.csv");
         String data3 = Utils.readFileAsString("data/Crime_Data_from_2010_to_Present.csv");
+        String data4 = Utils.readFileAsString("data/Crime_-2001_to_present.csv");
 
 //        ArrayList<ElectionResult> results = Utils.parse2016ElectionResults(data);
 //
