@@ -289,6 +289,16 @@ public class Utils {
         return results;
     }
 
+    public static String[] separateCoordinates (String input){
+        String [] parts = new String[2];
+        int indexOfSpace=input.indexOf(" ");
+
+        parts[0] = input.substring(0,indexOfSpace);
+        parts[1] = input.substring(indexOfSpace+1);
+
+        return parts;
+    }
+
     public static void parseCrimeData2010 (String data){
         ArrayList <CrimeData2010> results = new ArrayList<>();
 
@@ -298,12 +308,17 @@ public class Utils {
             String [] fields = removeQuoteFromRow(rows[i]);
 
             String crimeCodeDescription = fields[8];
-            String latitudes = fields[fields.length-2];
-            String longitude = fields[fields.length-1];
 
-            System.out.println("ccd" + crimeCodeDescription + "latitude" + latitudes + "longitude " + longitude);
+            if (crimeCodeDescription.contains("BURGLARY") || crimeCodeDescription.contains("THEFT")) {
+                String coordinates = fields[fields.length - 1];
 
+                String[] longLat = separateCoordinates(coordinates.substring(1, coordinates.length() - 1));
 
+                double longitude = Double.parseDouble(longLat[0]);
+                double latitude = Double.parseDouble(longLat[1]);
+
+                System.out.println("ccd " + crimeCodeDescription + "longitude " + longitude + "latitude " + latitude);
+            }
         }
     }
 }
