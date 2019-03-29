@@ -3,6 +3,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,7 +24,7 @@ public class Utils {
         return output.toString();
     }
 
-    private void writeDataToFile(String filePath, String data){
+    public static void writeDataToFile(String filePath, String data){
         File outfile = new File(filePath);
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(outfile))){
             writer.write(data);
@@ -30,6 +32,20 @@ public class Utils {
         } catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static String saveDateToFile2 (ArrayList<CrimeData2010> CrimeData2010ist, ArrayList<CrimeData2001> CrimeData2001list){
+        String data = "";
+        for (int i = 0; i < CrimeData2001list.size(); i++){
+            CrimeData2001 data2001 = CrimeData2001list.get(i);
+            CrimeData2010 data2010 = CrimeData2010ist.get(i);
+
+            data += data2010.getCrimeCodeDescription() + "," + data2010.getLatitude() + "," + data2010.getLongitude()
+                    + "," + data2001.getPrimaryType() + "," + data2001.getLatitude() + "," + data2001.getLongitude()+
+                    "\n";
+
+        }
+        return data;
     }
 
 
@@ -316,7 +332,7 @@ public class Utils {
         return parts;
     }
 
-    public static void parseCrimeData2010 (String data){
+    public static ArrayList<CrimeData2010> parseCrimeData2010 (String data){
         ArrayList <CrimeData2010> results = new ArrayList<>();
 
         String [] rows = data.split("\n");
@@ -331,17 +347,20 @@ public class Utils {
 
                 String[] longLat = separateCoordinates(coordinates.substring(1, coordinates.length() - 1));
 
-                double longitude = Double.parseDouble(longLat[0]);
-                double latitude = Double.parseDouble(longLat[1]);
+                double latitude = Double.parseDouble(longLat[0]);
+                double longitude = Double.parseDouble(longLat[1]);
 
                 System.out.println("ccd " + crimeCodeDescription + "longitude " + longitude + "latitude " + latitude);
 
                 CrimeData2010 point = new CrimeData2010(crimeCodeDescription, longitude,latitude);
+                results.add(point);
             }
         }
+
+        return results;
     }
 
-    public static void parseCrimeData2001(String data){
+    public static ArrayList<CrimeData2001> parseCrimeData2001(String data){
         ArrayList<CrimeData2001> results = new ArrayList<>();
 
         String [] rows = data.split("\n");
@@ -354,12 +373,16 @@ public class Utils {
                 double longitude = Double.parseDouble(fields[fields.length-2]);
                 double latitude = Double.parseDouble(fields[fields.length-3]);
 
+
                 System.out.println("primaryType " + primaryType + " longitude " + longitude + " latitude " + latitude);
 
                 CrimeData2001 point = new CrimeData2001(primaryType, longitude, latitude);
-
+                results.add(point);
             }
 
+
         }
+
+        return results;
     }
 }
