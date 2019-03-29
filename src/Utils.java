@@ -34,11 +34,17 @@ public class Utils {
         }
     }
 
-    public static String saveDateToFile1 (String [] counties){
+    public static String saveDateToFile1 (String [] counties, String educationData, String employmentData ){
         String data = "";
 
         for (int i = 0; i < counties.length; i++){
             String name = counties[i];
+            Education2016 eduData = getEducation2016Data(educationData, name);
+            Employment2016 empData = getEmployment2010Data(employmentData, name);
+
+            data += eduData.getAreaName() + "," + eduData.getNoHighSchool() + "," + eduData.getOnlyHighSchool() + "," +
+                    "," + eduData.getSomeCollege() + "," + eduData.getBachelorsOrMore() + empData.getTotalLaborForce() +
+                    "," + empData.getEmployedLaborForce() + "," + empData.getUnemployedLaborForce();
 
         }
 
@@ -47,6 +53,8 @@ public class Utils {
 
     public static String saveDateToFile2 (ArrayList<CrimeData2010> CrimeData2010ist, ArrayList<CrimeData2001> CrimeData2001list){
         String data = "";
+
+        data += "Crime Code Description,Latitude,Longitude,Primary type,Latitude,Longitude\n";
         for (int i = 0; i < CrimeData2001list.size(); i++){
             CrimeData2001 data2001 = CrimeData2001list.get(i);
             CrimeData2010 data2010 = CrimeData2010ist.get(i);
@@ -155,9 +163,9 @@ public class Utils {
             double[] electionResults = getElection2016Data(electionData, countyName);
             Election2016 vote2016 = new Election2016(electionResults[0], electionResults[1], electionResults[2]);
 
-            double[] educationResults = getEducation2016Data(educationData, countyName);
-            Education2016 educ2016 = new Education2016(countyName, educationResults[0], educationResults[1], educationResults[2],
-                    educationResults[3]);
+//            double[] educationResults = getEducation2016Data(educationData, countyName);
+//            Education2016 educ2016 = new Education2016(countyName, educationResults[0], educationResults[1], educationResults[2],
+//                    educationResults[3]);
 
 
 //            String[] employmentResults = getEmployment2016Data(employmentData, countyName);
@@ -174,21 +182,21 @@ public class Utils {
         return structure;
     }
 
-    private static void getEmployment2010Data(String employmentData, String countyName) { 
+    private static Employment2016 getEmployment2010Data(String employmentData, String countyName) {
         String areaName; // 3
         double civilianLaborForce; // 18
         double employed2010; // 19
         double unemployed2010; // 20
         ArrayList<Employment2016> data = new ArrayList<>();
 
-        String [] employmentInfo = new String [4];
+        String[] employmentInfo = new String[4];
 
-        String [] rows = employmentData.split("\n");
+        String[] rows = employmentData.split("\n");
 
 
         for (int i = 9; i < rows.length; i++) {
-            String [] fields = removeQuoteFromRow (rows[i]);
-            for (int k = 0; k < fields.length; k++){
+            String[] fields = removeQuoteFromRow(rows[i]);
+            for (int k = 0; k < fields.length; k++) {
                 fields[k] = fields[k].trim();
             }
 
@@ -206,15 +214,15 @@ public class Utils {
 
                 Employment2016 point = new Employment2016(areaName, civilianLaborForce, employed2010, unemployed2010);
 
-                data.add(point);
+                return point;
             }
 
         }
-
+        return null;
 
     }
 
-    private static double[] getEducation2016Data(String educationData, String countyName) {
+    private static Education2016 getEducation2016Data(String educationData, String countyName) {
         double noHighSchool;
         double onlyHighSchool;
         double someCollege;
@@ -238,9 +246,15 @@ public class Utils {
                 educationInfo [1] = onlyHighSchool;
                 educationInfo [2] = someCollege;
                 educationInfo [3] = bachelorsOrMore;
+
+                Education2016 data = new Education2016(countyName, noHighSchool, onlyHighSchool, someCollege, bachelorsOrMore);
+
+                return data;
+
             }
         }
-        return educationInfo;
+
+        return null;
 
     }
 
@@ -364,8 +378,6 @@ public class Utils {
                 double latitude = Double.parseDouble(longLat[0]);
                 double longitude = Double.parseDouble(longLat[1]);
 
-                System.out.println("ccd " + crimeCodeDescription + "longitude " + longitude + "latitude " + latitude);
-
                 CrimeData2010 point = new CrimeData2010(crimeCodeDescription, longitude,latitude);
                 results.add(point);
             }
@@ -386,9 +398,6 @@ public class Utils {
             if(primaryType.contains("BURGLARY") || primaryType.contains("THEFT")){
                 double longitude = Double.parseDouble(fields[fields.length-2]);
                 double latitude = Double.parseDouble(fields[fields.length-3]);
-
-
-                System.out.println("primaryType " + primaryType + " longitude " + longitude + " latitude " + latitude);
 
                 CrimeData2001 point = new CrimeData2001(primaryType, longitude, latitude);
                 results.add(point);
