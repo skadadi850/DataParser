@@ -34,7 +34,7 @@ public class Utils {
         }
     }
 
-    public static String saveDateToFile1 (String [] counties, String educationData, String employmentData ){
+    public static String saveDataToFile1 (String [] counties, String educationData, String employmentData ){
         String data = "";
 
         for (int i = 0; i < counties.length; i++){

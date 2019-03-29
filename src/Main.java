@@ -18,12 +18,18 @@ public class Main {
 
 
 
+
         ArrayList <CrimeData2010> crimeData10 = Utils.parseCrimeData2010(data3);
         ArrayList <CrimeData2001> crimeData01 = Utils.parseCrimeData2001(data4);
 
+        String [] counties = {"Los Angeles", "Cooks County"};
+
+        String csvData1 = Utils.saveDataToFile1(counties, data1, data2);
         String csvData2 = Utils.saveDateToFile2(crimeData10, crimeData01);
 
+
         Utils.writeDataToFile("CSV2",csvData2);
+        Utils.writeDataToFile("CSV1", csvData1);
 
 
 
