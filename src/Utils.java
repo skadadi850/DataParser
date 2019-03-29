@@ -34,6 +34,17 @@ public class Utils {
         }
     }
 
+    public static String saveDateToFile1 (String [] counties){
+        String data = "";
+
+        for (int i = 0; i < counties.length; i++){
+            String name = counties[i];
+
+        }
+
+        return data;
+    }
+
     public static String saveDateToFile2 (ArrayList<CrimeData2010> CrimeData2010ist, ArrayList<CrimeData2001> CrimeData2001list){
         String data = "";
         for (int i = 0; i < CrimeData2001list.size(); i++){
@@ -168,6 +179,7 @@ public class Utils {
         double civilianLaborForce; // 18
         double employed2010; // 19
         double unemployed2010; // 20
+        ArrayList<Employment2016> data = new ArrayList<>();
 
         String [] employmentInfo = new String [4];
 
@@ -192,7 +204,9 @@ public class Utils {
                 System.out.println("employed 2010" + employed2010);
                 System.out.println("unemployed 2010" + unemployed2010);
 
+                Employment2016 point = new Employment2016(areaName, civilianLaborForce, employed2010, unemployed2010);
 
+                data.add(point);
             }
 
         }

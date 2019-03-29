@@ -1,17 +1,26 @@
 public class Employment2016 {
-    private int totalLaborForce;
+    private String areaName;
+    private double totalLaborForce;
     private double employedLaborForce;
-    private int unemployedLaborForce;
-    private double unemployedPercent;
+    private double unemployedLaborForce;
 
-    public Employment2016(int totalLaborForce, double employedLaborForce, int unemployedLaborForce, double unemployedPercent) {
+
+    public Employment2016(String areaName, double totalLaborForce, double employedLaborForce, double unemployedLaborForce) {
         this.totalLaborForce = totalLaborForce;
         this.employedLaborForce = employedLaborForce;
         this.unemployedLaborForce = unemployedLaborForce;
-        this.unemployedPercent = unemployedPercent;
+        this.areaName = areaName;
     }
 
-    public int getTotalLaborForce() {
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public double getTotalLaborForce() {
         return totalLaborForce;
     }
 
@@ -27,7 +36,7 @@ public class Employment2016 {
         this.employedLaborForce = employedLaborForce;
     }
 
-    public int getUnemployedLaborForce() {
+    public double getUnemployedLaborForce() {
         return unemployedLaborForce;
     }
 
@@ -35,11 +44,4 @@ public class Employment2016 {
         this.unemployedLaborForce = unemployedLaborForce;
     }
 
-    public double getUnemployedPercent() {
-        return unemployedPercent;
-    }
-
-    public void setUnemployedPercent(double unemployedPercent) {
-        this.unemployedPercent = unemployedPercent;
-    }
 }
